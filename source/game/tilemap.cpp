@@ -4,14 +4,6 @@
 #include <fstream>
 #include <lua.hpp>
 
-int** create_2d_array(int w, int h){
-    int** array = new int*[w];
-    for(int i = 0; i < h ; i++){
-        array[i] = new int[h];
-    }
-    return array;
-}
-
 void Tilemap::init(int width, int height,int col, int tilesize, Texture *texture, std::vector<int> map){
     this->width = width;
     this->height = height;
