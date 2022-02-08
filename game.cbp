@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="game" />
+		<Option execution_dir="../game" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/game" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/game" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-std=c17" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Linker>
+			<Add option="-lallegro -lallegro_primitives -lallegro_image -lallegro_font -ltinyxml2 -llua" />
+		</Linker>
+		<Unit filename="source/allegro/game.cpp" />
+		<Unit filename="source/allegro/game.h" />
+		<Unit filename="source/allegro/graphics.cpp" />
+		<Unit filename="source/allegro/graphics.h" />
+		<Unit filename="source/core/game.cpp" />
+		<Unit filename="source/core/game.h" />
+		<Unit filename="source/core/gameobject.cpp" />
+		<Unit filename="source/core/gameobject.h" />
+		<Unit filename="source/core/graphics.h" />
+		<Unit filename="source/core/input.cpp" />
+		<Unit filename="source/core/input.h" />
+		<Unit filename="source/core/vector2.h" />
+		<Unit filename="source/game/player.cpp" />
+		<Unit filename="source/game/player.h" />
+		<Unit filename="source/game/tilemap.cpp" />
+		<Unit filename="source/game/tilemap.h" />
+		<Unit filename="source/game/world.cpp" />
+		<Unit filename="source/game/world.h" />
+		<Unit filename="source/main.cpp" />
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
