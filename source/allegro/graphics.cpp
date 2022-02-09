@@ -10,7 +10,7 @@ void All_Graphics::drawTexture(float x, float y, void* bitmap){
 }
 
 void All_Graphics::drawSprite(float x, float y, Sprite &sprite){
-    al_draw_bitmap_region((ALLEGRO_BITMAP*)sprite.texture.get(),
+    al_draw_bitmap_region((ALLEGRO_BITMAP*)sprite.texture->get(),
     sprite.x, sprite.y, sprite.w, sprite.h, x, y,0);
 }
 
@@ -35,12 +35,12 @@ void All_Graphics::loadTexture(const char* filename){
         return;
     }
     printf("file %s loaded\n",filename);
-    bitmap.insert(std::pair<std::string,ALLEGRO_BITMAP*>(filename,bmp));
+    texture.insert(std::pair<std::string,Texture*>(filename,new Texture(bmp)));
 }
 
 
-void* All_Graphics::getTexture(const char* filename){
-   return bitmap[filename];
+Texture* All_Graphics::getTexture(const char* filename){
+   return texture[filename];
 }
 
 void All_Graphics::flipDisplay(){
@@ -52,9 +52,11 @@ void All_Graphics::clearScreen(int r, int g, int b){
 }
 
 void All_Graphics::quit(){
-    for (auto &it : bitmap){
-            al_destroy_bitmap(it.second);
+    for (auto &it : texture){
+            al_destroy_bitmap((ALLEGRO_BITMAP*)it.second->get());
+            delete it.second;
     }
+    texture.clear();
 }
 
 

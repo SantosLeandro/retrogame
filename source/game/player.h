@@ -14,7 +14,7 @@ class Player: public GameObject{
             sprite.y = 0;
             position.x = 0;
             position.y = 0;
-            sprite.texture.set(graphics->getTexture("img/test.png"));
+            sprite.texture = graphics->getTexture("img/test.png");
         }
         void update(float deltatime){
             if(Keyboard::getKeyDown(1))
