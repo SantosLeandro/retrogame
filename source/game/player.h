@@ -21,5 +21,7 @@ class Player: public GameObject{
                position.x -= 1;
             else if(Keyboard::getKeyDown(4))
                position.x += 1;
+
+            GameObject::update(deltatime);
         }
 };

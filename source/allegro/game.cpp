@@ -60,11 +60,30 @@ void AllegroGame::init(){
     Keyboard::init(key);
     graphics.loadTexture("img/test.png");
     graphics.loadTexture("img/tileset.png");
-    world.addGameObject(0, &graphics);
-    world.load("level/level01.lua", &graphics);
+
+
 }
 
 void AllegroGame::run(){
+   SpriteList spriteList;
+   Sprite sprite;
+   sprite.texture = graphics.getTexture("img/test.png");
+   spriteList.addSprite(sprite);
+//
+    Animation animation_idle;
+    animation_idle.sequence.push_back(0);
+    animation_idle.spriteList = &spriteList;
+//
+//    AnimationList animationList;
+//    animationList.animation["idle"] = animation_idle;
+
+    std::shared_ptr<GameObject> player = world.addGameObject(0, &graphics);
+    player.get()->animationController.setAnimation(&animation_idle);
+    world.load("level/level01.lua", &graphics);
+
+
+
+
     bool redraw = true;
     while(!done){
          al_wait_for_event(queue, &event);
