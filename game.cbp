@@ -41,6 +41,8 @@
 		<Unit filename="source/allegro/game.h" />
 		<Unit filename="source/allegro/graphics.cpp" />
 		<Unit filename="source/allegro/graphics.h" />
+		<Unit filename="source/core/component.cpp" />
+		<Unit filename="source/core/component.h" />
 		<Unit filename="source/core/game.cpp" />
 		<Unit filename="source/core/game.h" />
 		<Unit filename="source/core/gameobject.cpp" />

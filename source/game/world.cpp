@@ -64,9 +64,11 @@ void World::load(const char* filename, Graphics *graphics){
 
     lua_close(state);
 
-    Texture *texture = new Texture();
-    texture->set(graphics->getTexture(tex_file));
+    Texture *texture = graphics->getTexture(tex_file);
+    if(!texture){
+        std::cout<<"NOT FOUND\n";
+    }
 
-    tilemap.init(w,h,col,tilesize,texture,tiles);
+    tilemap.init(w,h,col,tilesize,graphics->getTexture(tex_file),tiles);
 
 }

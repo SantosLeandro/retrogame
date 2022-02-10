@@ -3,8 +3,6 @@
 #include "../core/graphics.h"
 #include <vector>
 
-int** create_2d_array(int w, int h);
-
 class Tilemap{
     protected:
     Texture *texture;

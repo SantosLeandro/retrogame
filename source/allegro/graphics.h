@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include "../core/graphics.h"
 #include <allegro5/allegro5.h>
@@ -10,7 +10,7 @@
 
 class All_Graphics: public Graphics{
     protected:
-        std::map<std::string, ALLEGRO_BITMAP*> bitmap;
+        std::map<std::string, Texture*> texture;
         ALLEGRO_FONT* font;
     public:
         void init();
@@ -20,7 +20,7 @@ class All_Graphics: public Graphics{
         void drawRectangle(float x, float y, float w, float h);
         void drawText(const char* text, float x, float y);
         void loadTexture(const char* filename);
-        void* getTexture(const char* filename);
+        Texture* getTexture(const char* filename);
         void clearScreen(int r, int g, int b);
         void flipDisplay();
         void quit();

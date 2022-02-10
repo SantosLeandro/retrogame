@@ -3,17 +3,21 @@
 
 class Texture{
     private:
-     void* tex = nullptr;
+     void* bitmap = nullptr;
     public:
-        virtual void* get(){ return tex;}
-        void set(void* texture){
-            this->tex = texture;
+        Texture(){}
+        Texture(void *bitmap){
+            this->bitmap = bitmap;
+        }
+        virtual void* get(){ return bitmap;}
+        void set(void* bitmap){
+            this->bitmap = bitmap;
         }
 };
 
 class Sprite{
     public:
-        Texture texture;
+        Texture *texture;
         int x = 0;
         int y = 0;
         int w = 32;
@@ -32,5 +36,5 @@ class Graphics{
         virtual void loadTexture(const char* filename){}
         virtual void clearScreen(int r, int g, int b){}
         virtual void flipDisplay(){}
-        virtual void* getTexture(const char* filename){}
+        virtual Texture* getTexture(const char* filename){}
 };
