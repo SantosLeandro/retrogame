@@ -1,5 +1,6 @@
 #pragma once
 
+#include "component.h"
 #include "vector2.h"
 #include "graphics.h"
 #include "input.h"
@@ -8,12 +9,6 @@
 #include <iostream>
 #include <vector>
 
-class Component{
-public:
-    virtual void init() = 0;
-    virtual void update(float deltatime) = 0;
-    virtual void draw(Graphics *graphics) = 0;
-};
 
 
 class SpriteList{
@@ -41,7 +36,7 @@ class AnimationList{
         Animation get(std::string name){ return animation[name];}
 };
 
-class AnimationController{
+class AnimationController: public Component{
     private:
         unsigned int ticks = 0;
         unsigned int current_frame = 0;
@@ -54,7 +49,15 @@ class AnimationController{
             ticks = 0;
         }
 
-        int play(){
+        void updater(float deltatime){
+            ticks++;
+        }
+
+        void draw(Graphics *Graphics){
+
+        }
+
+        void play(){
 
             ticks++;
         }
@@ -66,19 +69,13 @@ class AnimationController{
 
 
 
-//class StaticSprite: public Component{
-//    public:
-//        void draw()
-//};
-
-
-
 class GameObject{
     protected:
         Vector2 position;
         float w = 32;
         float h = 32;
     public:
+        std::vector<Component*> component;
         AnimationList *animationList;
         AnimationController animationController;
 
@@ -89,14 +86,23 @@ class GameObject{
         void setPosition(const Vector2 &position){
             this->position = position;
         }
-//       GameObject();
-//       GameObject(Vector2 &position, Sprite &sprite);
+
+        template <typename T>
+        T* addComponent(){
+            T *comp = new T();
+            comp->init(this);
+            component.push_back(comp);
+            return comp;
+        }
 
         virtual void init(Graphics *graphics){
 
         }
         virtual void update(float deltatime){
-            animationController.play();
+            for(auto &c: component)
+                c->update(deltatime);
+
+            //animationController.play();
         }
 
         virtual void draw(Graphics *graphics);

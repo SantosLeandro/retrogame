@@ -65,20 +65,22 @@ void AllegroGame::init(){
 }
 
 void AllegroGame::run(){
-   SpriteList spriteList;
+//   SpriteList spriteList;
    Sprite sprite;
    sprite.texture = graphics.getTexture("img/test.png");
-   spriteList.addSprite(sprite);
-//
-    Animation animation_idle;
-    animation_idle.sequence.push_back(0);
-    animation_idle.spriteList = &spriteList;
-//
-//    AnimationList animationList;
-//    animationList.animation["idle"] = animation_idle;
+//   spriteList.addSprite(sprite);
+////
+//    Animation animation_idle;
+//    animation_idle.sequence.push_back(0);
+//    animation_idle.spriteList = &spriteList;
+////
+////    AnimationList animationList;
+////    animationList.animation["idle"] = animation_idle;
 
     std::shared_ptr<GameObject> player = world.addGameObject(0, &graphics);
-    player.get()->animationController.setAnimation(&animation_idle);
+    StaticSprite *static_sprite = player.get()->addComponent<StaticSprite>();
+    static_sprite->setSprite(&sprite);
+    //player.get()->animationController.setAnimation(&animation_idle);
     world.load("level/level01.lua", &graphics);
 
 
