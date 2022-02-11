@@ -16,8 +16,7 @@ public:
     }
     ~Vector2(){}
     Vector2 operator+(const Vector2& v) {
-    this->x += v.x;
-    this->y += v.y;
+        return Vector2(this->x + v.x, this->y+v.y);
     }
 };
 

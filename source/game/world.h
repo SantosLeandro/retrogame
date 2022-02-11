@@ -9,15 +9,20 @@
 
 class World{
     protected:
-        std::vector<std::shared_ptr<GameObject> > gameObject;
+        std::vector<GameObject*> gameObject;
         Tilemap tilemap;
     public:
         void load(const char* filename, Graphics *graphics);
         void testMap(Graphics *graphics);
-        std::shared_ptr<GameObject> addGameObject(int type, Graphics *graphics){
+        GameObject* newGameObject(){
+            auto *object = new GameObject();
+            gameObject.push_back(std::move(object));
+            return gameObject.back();
+        }
+        GameObject* addGameObject(int type, Graphics *graphics){
             switch(type){
                 case 0:
-                    auto object = std::make_shared<Player>();
+                    auto *object = new Player();
                     object->init(graphics);
                     gameObject.push_back(std::move(object));
                     return gameObject.back();

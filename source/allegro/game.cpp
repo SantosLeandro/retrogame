@@ -77,8 +77,10 @@ void AllegroGame::run(){
 ////    AnimationList animationList;
 ////    animationList.animation["idle"] = animation_idle;
 
-    std::shared_ptr<GameObject> player = world.addGameObject(0, &graphics);
-    StaticSprite *static_sprite = player.get()->addComponent<StaticSprite>();
+    GameObject *player = world.newGameObject();
+    player->setPosition(Vector2{100,100});
+    player->addComponent<PlayerController>();
+    StaticSprite *static_sprite = player->addComponent<StaticSprite>();
     static_sprite->setSprite(&sprite);
     //player.get()->animationController.setAnimation(&animation_idle);
     world.load("level/level01.lua", &graphics);
