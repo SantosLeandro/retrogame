@@ -6,8 +6,9 @@
 #include "player.h"
 #include "../core/graphics.h"
 #include "tilemap.h"
+#include <lua.hpp>
 
-class World{
+class Level{
     protected:
         std::vector<GameObject*> gameObject;
         Tilemap tilemap;
@@ -43,4 +44,11 @@ class World{
             for(auto &o: gameObject)
                 o->draw(graphics);
         }
+};
+
+int create_level(lua_State *L);
+
+class LevelManager{
+    public:
+        Level* load(const char *filename);
 };

@@ -1,10 +1,10 @@
 #include "world.h"
-#include <lua.hpp>
 
-void World::testMap(Graphics *graphics){
+
+void Level::testMap(Graphics *graphics){
 }
 
-void World::load(const char* filename, Graphics *graphics){
+void Level::load(const char* filename, Graphics *graphics){
     lua_State *state;
     state = luaL_newstate();
     luaL_openlibs(state);
@@ -71,4 +71,31 @@ void World::load(const char* filename, Graphics *graphics){
 
     tilemap.init(w,h,col,tilesize,graphics->getTexture(tex_file),tiles);
 
+}
+
+
+int create_level(lua_State *state){
+    printf("_create_level\n");
+    lua_getfield(state, -1, "name");
+    const char* type = lua_tostring(state, -1);
+    printf("NAME: %s\n\n",type);
+    return 1;
+
+}
+
+Level* LevelManager::load(const char* filename){
+    lua_State *state;
+    state = luaL_newstate();
+    luaL_openlibs(state);
+    lua_pushcfunction(state, create_level);
+    lua_setglobal(state, "_create_level");
+    int result = luaL_loadfile(state, filename);
+    if(result != 0){
+        std::cout<<"ERROR SCRIPT "<<lua_tostring(state, -1)<<"\n";
+    }
+    lua_pcall(state, 0, LUA_MULTRET, 0);
+
+
+
+    return nullptr;
 }

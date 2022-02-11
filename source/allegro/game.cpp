@@ -65,6 +65,9 @@ void AllegroGame::init(){
 }
 
 void AllegroGame::run(){
+
+    LevelManager levelManager;
+    levelManager.load("level/level02.lua");
 //   SpriteList spriteList;
    Sprite sprite;
    sprite.texture = graphics.getTexture("img/test.png");
@@ -77,13 +80,14 @@ void AllegroGame::run(){
 ////    AnimationList animationList;
 ////    animationList.animation["idle"] = animation_idle;
 
-    GameObject *player = world.newGameObject();
+
+    GameObject *player = level.newGameObject();
     player->setPosition(Vector2{100,100});
     player->addComponent<PlayerController>();
     StaticSprite *static_sprite = player->addComponent<StaticSprite>();
     static_sprite->setSprite(&sprite);
     //player.get()->animationController.setAnimation(&animation_idle);
-    world.load("level/level01.lua", &graphics);
+    level.load("level/level01.lua", &graphics);
 
 
 
@@ -118,12 +122,12 @@ void AllegroGame::run(){
 }
 
 void AllegroGame::update(){
-    world.update();
+    level.update();
 }
 
 void AllegroGame::draw(){
     graphics.clearScreen(0,0,0);
-    world.draw(&graphics);
+    level.draw(&graphics);
     graphics.flipDisplay();
 }
 
