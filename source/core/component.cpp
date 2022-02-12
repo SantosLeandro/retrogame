@@ -1,12 +1,14 @@
 #include "component.h"
 #include "gameobject.h"
 
-void StaticSprite::setSprite(Sprite sprite){
-    this->sprite = sprite;
+void StaticSprite::setSprite(Texture* texture, const Rectangle &rect){
+    this->texture = texture;
+    this->rect = rect;
 }
 
 void StaticSprite::draw(IGraphics *graphics){
-    graphics->drawSprite(owner->getPosition().x + sprite.w / 2, owner->getPosition().y + sprite.h / 2, sprite);
+    //graphics->draw(owner->getPosition().x + sprite.w / 2, owner->getPosition().y + sprite.h / 2, sprite);
+    graphics->draw(owner->getPosition(), rect, texture->get());
 }
 
 void AnimationController::update(float deltatime){
@@ -15,6 +17,8 @@ void AnimationController::update(float deltatime){
 }
 
 void AnimationController::draw(IGraphics *graphics){
+
+    graphics->draw(owner->getPosition(),getRectangle(),animation->spriteSheet->getTexture());
     if(getSprite())
         graphics->drawSprite(owner->getPosition().x + getSprite()->w / 2,
                              owner->getPosition().y + getSprite()->h / 2,

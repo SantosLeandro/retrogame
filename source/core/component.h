@@ -38,7 +38,8 @@ public:
 
 class StaticSprite: public Component{
    private:
-       Sprite sprite;
+       Texture* texture;
+       Rectangle rect;
 
    public:
        StaticSprite(){
@@ -46,26 +47,28 @@ class StaticSprite: public Component{
        StaticSprite(GameObject *owner): Component(owner){
 
        }
-       void setSprite(Sprite sprite);
+       void setSprite(Texture* texture, const Rectangle &rect);
        void draw(IGraphics *IGraphics);
 };
 
 class SpriteList{
     private:
+        Texture* texture;
+        std::vector<Rectangle> rect;
         std::vector<Sprite> sprite;
     public:
-        void addSprite(Sprite &sprite){
+        void addRect(const Rectangle &rect){
+            this->rect.push_back(rect);
+        }
+        void addSprite(Sprite sprite){
             this->sprite.push_back(sprite);
         }
+
+        Texture* getTexture(){return texture; }
+        Rectangle& getRectangle(int index){ return rect[index];}
         Sprite* getSprite(int i){ return &sprite[i];}
 };
 
-struct Rectangle{
-    int x;
-    int y;
-    int w;
-    int h;
-};
 
 class SpriteSheet{
     private:
@@ -79,6 +82,8 @@ class SpriteSheet{
         void setTexture(Texture *texture){
             this->texture = texture;
         }
+        Texture* getTexture(){return texture;}
+        Rectangle& getRectangle(int index){ return rectangle[index];}
         void addRectangle(int x, int y, int w, int h){
             rectangle.push_back({x,y,w,h});
         }
@@ -115,6 +120,9 @@ class AnimationController: public Component{
 
         void update(float deltatime);
         void draw(IGraphics *IGraphics);
+        Rectangle& getRectangle(){
+            return animation->spriteSheet->getRectangle(current_frame);
+        }
         Sprite* getSprite(){
             return animation->getCurrentSprite(current_frame);
         }

@@ -18,6 +18,11 @@ void Graphics::init(){
    font = al_create_builtin_font();
 }
 
+void Graphics::draw(const Vector2 &position, const Rectangle &rect, void* texture){
+    al_draw_bitmap_region((ALLEGRO_BITMAP*)texture,
+    rect.x, rect.y, rect.w, rect.h, position.x + rect.w / 2 , position.y + rect.h / 2,0);
+}
+
 void Graphics::drawTexture(float x, float y, void* bitmap){
     al_draw_bitmap((ALLEGRO_BITMAP*)bitmap, x, y, 0);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "vector2.h"
 class Texture{
     private:
      void* bitmap = nullptr;
@@ -24,9 +24,19 @@ class Sprite{
         int h = 32;
 };
 
+struct Rectangle{
+    int x;
+    int y;
+    int w;
+    int h;
+    Rectangle(int x, int y, int w, int h):x(x),y(y),w(w),h(h){}
+    Rectangle(){}
+};
+
 class IGraphics{
     public:
         virtual void init(){}
+        virtual void draw(const Vector2 &position, const Rectangle &rect, void* texture){}
         virtual void drawTexture(float x, float y, void* texture){}
         virtual void drawSprite(float x, float y, Sprite &sprite){}
         virtual void drawTile(float x, float y, float src_x, float src_y, int tilesize, void* texture){}

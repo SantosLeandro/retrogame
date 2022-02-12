@@ -135,11 +135,9 @@ int lua_add_component(lua_State *state){
     const char* type = lua_tostring(state, 2);
     if(strcmp(type,"staticSprite")==0){
         printf("  _add_static_sprite\n");
-        Sprite sprite;
         const char* texture = lua_tostring(state, 3);
-        sprite.texture = Graphics::getInstance()->getTexture(texture);
         StaticSprite *ss = object->addComponent<StaticSprite>();
-        ss->setSprite(sprite);
+        ss->setSprite(Graphics::getInstance()->getTexture(texture),Rectangle(0,0,32,32));
     }
     return 0;
 }
@@ -188,10 +186,8 @@ int lua_create_object_ext(lua_State *state){
              const char* texture = lua_tostring(state, -1);
              lua_pop(state, 1);
 
-             Sprite sprite;
-             sprite.texture = Graphics::getInstance()->getTexture(texture);
              StaticSprite *ss = object->addComponent<StaticSprite>();
-             ss->setSprite(sprite);
+             ss->setSprite(Graphics::getInstance()->getTexture(texture),{sx,sy,sw,sh});
 
         }
         printf("TYPE: %s\n\n",type);
