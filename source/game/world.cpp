@@ -146,18 +146,57 @@ int lua_add_component(lua_State *state){
 
 int lua_create_object_ext(lua_State *state){
     printf("_create_object_ext\n");
-    float x = lua_tonumber(state, 1);
-    float y = lua_tonumber(state, 2);
-    int len = lua_rawlen(state, 3);
+    Level* level = (Level*)lua_touserdata(state, 1);
+    float x = lua_tonumber(state, 2);
+    float y = lua_tonumber(state, 3);
+    int len = lua_rawlen(state, 4);
+
+    GameObject *object = level->newGameObject();
+    object->setPosition(Vector2(x,y));
+
     std::cout<<"len "<<len<<"\n\n";
     for(int i=1; i <= len;i++){
         printf("i = %d\n",i);
         lua_rawgeti(state, -1, i);
-        lua_getfield(state, 4,"type");
+        lua_getfield(state, 5,"type");
         const char* type = lua_tostring(state,-1);
+        //unsigned int type = lua_tointeger(state,-1);
+        lua_pop(state, 1);
+
+        if(strcmp(type,"playerBehaviour")==0){
+            object->addComponent<PlayerController>();
+        }
+        else if (strcmp(type,"staticSprite")==0){
+
+             lua_getfield(state,5,"x");
+             int sx = lua_tointeger(state, -1);
+             lua_pop(state, 1);
+
+             lua_getfield(state,5,"y");
+             int sy = lua_tointeger(state, -1);
+             lua_pop(state, 1);
+
+             lua_getfield(state,5,"w");
+             int sw = lua_tointeger(state, -1);
+             lua_pop(state, 1);
+
+             lua_getfield(state,5,"h");
+             int sh = lua_tointeger(state, -1);
+             lua_pop(state, 1);
+
+             lua_getfield(state,5,"texture");
+             const char* texture = lua_tostring(state, -1);
+             lua_pop(state, 1);
+
+             Sprite sprite;
+             sprite.texture = Graphics::getInstance()->getTexture(texture);
+             StaticSprite *ss = object->addComponent<StaticSprite>();
+             ss->setSprite(sprite);
+
+        }
         printf("TYPE: %s\n\n",type);
         lua_pop(state,1);
-        lua_pop(state,1);
     }
+     lua_pushlightuserdata(state, object);
     return 1;
 }

@@ -19,14 +19,12 @@ class Component;
 class GameObject{
     protected:
         Vector2 position;
+        Vector2 target;
         float w = 32;
         float h = 32;
     public:
         std::vector<Component*> component;
-        //AnimationList *animationList;
-        //AnimationController animationController;
 
-        //Sprite sprite;
         float getWidth(){return w;}
         float getHeight(){return h;}
         Vector2 getPosition(){return position;}

@@ -22,11 +22,17 @@ void AnimationController::draw(IGraphics *graphics){
 }
 
 void PlayerController::update(float deltatime){
-
         if(Keyboard::getKeyDown(1))
             owner->move(Vector2(-1,0));
         else if(Keyboard::getKeyDown(4))
             owner->move(Vector2(1,0));
 
+}
+
+void ScriptBehaviour::move_to(const Vector2 &v, float speed){
+    target = v;
+}
+
+void ScriptBehaviour::update(float deltatime){
 
 }
