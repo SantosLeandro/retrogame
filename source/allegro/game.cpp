@@ -55,19 +55,23 @@ void AllegroGame::init(){
         key[i] = 0;
     }
 
-    graphics.init();
+    Graphics::getInstance()->init();
 
     Keyboard::init(key);
-    graphics.loadTexture("img/test.png");
-    graphics.loadTexture("img/tileset.png");
+    Graphics::getInstance()->init();
+    Graphics::getInstance()->loadTexture("img/test.png");
+    Graphics::getInstance()->loadTexture("img/tileset.png");
 
 
 }
 
 void AllegroGame::run(){
+
+
+    levelManager.load("level/level02.lua");
 //   SpriteList spriteList;
-   Sprite sprite;
-   sprite.texture = graphics.getTexture("img/test.png");
+    //Sprite sprite;
+   //sprite.texture = Graphics::getInstance()->getTexture("img/test.png");
 //   spriteList.addSprite(sprite);
 ////
 //    Animation animation_idle;
@@ -77,11 +81,14 @@ void AllegroGame::run(){
 ////    AnimationList animationList;
 ////    animationList.animation["idle"] = animation_idle;
 
-    std::shared_ptr<GameObject> player = world.addGameObject(0, &graphics);
-    StaticSprite *static_sprite = player.get()->addComponent<StaticSprite>();
-    static_sprite->setSprite(&sprite);
-    //player.get()->animationController.setAnimation(&animation_idle);
-    world.load("level/level01.lua", &graphics);
+
+//    GameObject *player = level.newGameObject();
+//    player->setPosition(Vector2{100,100});
+//    player->addComponent<PlayerController>();
+//    StaticSprite *static_sprite = player->addComponent<StaticSprite>();
+//    static_sprite->setSprite(&sprite);
+//    player.get()->animationController.setAnimation(&animation_idle);
+//    level.load("level/level01.lua", Graphics::getInstance());
 
 
 
@@ -116,17 +123,17 @@ void AllegroGame::run(){
 }
 
 void AllegroGame::update(){
-    world.update();
+    levelManager.update(0);
 }
 
 void AllegroGame::draw(){
-    graphics.clearScreen(0,0,0);
-    world.draw(&graphics);
-    graphics.flipDisplay();
+    Graphics::getInstance()->clearScreen(0,0,0);
+    levelManager.draw(Graphics::getInstance());
+    Graphics::getInstance()->flipDisplay();
 }
 
 void AllegroGame::quit(){
-    graphics.quit();
+    Graphics::getInstance()->quit();
      al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);

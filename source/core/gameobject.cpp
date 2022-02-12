@@ -1,19 +1,27 @@
 #include "gameobject.h"
+#include "component.h"
 
 
-void GameObject::draw(Graphics *graphics){
+void GameObject::update(float deltatime){
+            for(auto &c: component)
+                c->update(deltatime);
+
+            //animationController.play();
+        }
+
+void GameObject::draw(IGraphics *IGraphics){
     std::string text = "X: " + std::to_string(position.x) + " Y: " + std::to_string(position.y);
     for(auto &c: component)
-                c->draw(graphics);
-    graphics->drawText(text.c_str(), 0, 0);
-    //graphics->drawSprite(position.x + sprite.w / 2, position.y + sprite.h / 2, sprite);
+                c->draw(IGraphics);
+    IGraphics->drawText(text.c_str(), 0, 0);
+    //IGraphics->drawSprite(position.x + sprite.w / 2, position.y + sprite.h / 2, sprite);
 
 //    if(animationController.getSprite())
-//        graphics->drawSprite(position.x + animationController.getSprite()->w / 2,
+//        IGraphics->drawSprite(position.x + animationController.getSprite()->w / 2,
 //                             position.y + animationController.getSprite()->h / 2,
 //                             *animationController.getSprite());
 //
-//    graphics->drawRectangle(position.x + sprite.w / 2, position.y + sprite.h / 2, sprite.w, sprite.h);
+//    IGraphics->drawRectangle(position.x + sprite.w / 2, position.y + sprite.h / 2, sprite.w, sprite.h);
 }
 
 bool GameObject::checkCollision(GameObject &go){

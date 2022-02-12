@@ -13,7 +13,7 @@ void Tilemap::init(int width, int height,int col, int tilesize, Texture *texture
     this->map = map;
 }
 
-void Tilemap::draw(Graphics *graphics){
+void Tilemap::draw(IGraphics *graphics){
     int src_x = 0;
     int src_y = 0;
     int dst_x = 0;

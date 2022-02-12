@@ -13,6 +13,6 @@ class Tilemap{
     std::vector<int> map;
     public:
         void init(int width, int height,int col, int tilesize, Texture *texture, std::vector<int> map);
-        void draw(Graphics *graphics);
+        void draw(IGraphics *graphics);
         void clear();
 };

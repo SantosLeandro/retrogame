@@ -2,20 +2,14 @@
 
 #include "../core/gameobject.h"
 #include "../core/vector2.h"
+#include "../core/graphics.h"
 
 class Player: public GameObject{
     private:
      Vector2 mv;
+     Sprite sprite;
     public:
-        void init(Graphics *graphics){
-            sprite.w = 32;
-            sprite.h = 32;
-            sprite.x = 0;
-            sprite.y = 0;
-            position.x = 0;
-            position.y = 0;
-            sprite.texture = graphics->getTexture("img/test.png");
-        }
+        void init(IGraphics *IGraphics);
         void update(float deltatime){
             if(Keyboard::getKeyDown(1))
                position.x -= 1;

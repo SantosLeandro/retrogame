@@ -25,7 +25,7 @@ CC_FLAGS=-c         \
 		 -std=c++17\
 		 -O2		\
 		 
-LIBS= -lallegro -lallegro_primitives -lallegro_image -lallegro_font
+LIBS= -lallegro -lallegro_primitives -lallegro_image -lallegro_font -llua
  
 # Command used at clean target
 RM = rm -rf

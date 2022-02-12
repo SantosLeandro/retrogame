@@ -6,18 +6,24 @@
 #include "player.h"
 #include "../core/graphics.h"
 #include "tilemap.h"
+#include <lua.hpp>
 
-class World{
+class Level{
     protected:
-        std::vector<std::shared_ptr<GameObject> > gameObject;
+        std::vector<GameObject*> gameObject;
         Tilemap tilemap;
     public:
-        void load(const char* filename, Graphics *graphics);
-        void testMap(Graphics *graphics);
-        std::shared_ptr<GameObject> addGameObject(int type, Graphics *graphics){
+        void load(const char* filename, IGraphics *graphics);
+        void testMap(IGraphics *graphics);
+        GameObject* newGameObject(){
+            auto *object = new GameObject();
+            gameObject.push_back(std::move(object));
+            return gameObject.back();
+        }
+        GameObject* addGameObject(int type, IGraphics *graphics){
             switch(type){
                 case 0:
-                    auto object = std::make_shared<Player>();
+                    auto *object = new Player();
                     object->init(graphics);
                     gameObject.push_back(std::move(object));
                     return gameObject.back();
@@ -33,9 +39,34 @@ class World{
                 o->update(0);
         }
 
-        virtual void draw(Graphics *graphics){
+        virtual void draw(IGraphics *graphics){
         tilemap.draw(graphics);
             for(auto &o: gameObject)
                 o->draw(graphics);
         }
+};
+
+int lua_create_level(lua_State *L);
+int lua_create_object(lua_State *L);
+int lua_add_component(lua_State *L);
+int lua_create_object_ext(lua_State *state);
+
+class LevelManager{
+        static std::vector<Level*> level;
+        static int levelId;
+        IGraphics *graphics;
+    public:
+        static void changeLevel(int id){
+            levelId = id;
+        }
+        static void update(float deltatime){
+            level[levelId]->update();
+        }
+        static void draw(IGraphics *graphics){
+            level[levelId]->draw(graphics);
+        }
+
+        static void init(IGraphics *graphics);
+        static Level* create();
+        static Level* load(const char *filename);
 };
