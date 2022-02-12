@@ -1,6 +1,6 @@
 #pragma once
 
-#include "component.h"
+//#include "component.h"
 #include "vector2.h"
 #include "graphics.h"
 #include "input.h"
@@ -12,7 +12,9 @@
 
 
 
-
+class Component;
+//class AnimationList;
+//class AnimationController;
 
 class GameObject{
     protected:
@@ -21,10 +23,10 @@ class GameObject{
         float h = 32;
     public:
         std::vector<Component*> component;
-        AnimationList *animationList;
-        AnimationController animationController;
+        //AnimationList *animationList;
+        //AnimationController animationController;
 
-        Sprite sprite;
+        //Sprite sprite;
         float getWidth(){return w;}
         float getHeight(){return h;}
         Vector2 getPosition(){return position;}
@@ -44,18 +46,13 @@ class GameObject{
             return comp;
         }
 
-        virtual void init(Graphics *graphics){
+        virtual void init(IGraphics *IGraphics){
 
         }
 
-        virtual void update(float deltatime){
-            for(auto &c: component)
-                c->update(deltatime);
+        virtual void update(float deltatime);
 
-            //animationController.play();
-        }
-
-        virtual void draw(Graphics *graphics);
+        virtual void draw(IGraphics *IGraphics);
 
         bool checkCollision(GameObject &go);
 

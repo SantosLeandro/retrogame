@@ -4,11 +4,13 @@
 #include <map>
 #include <iostream>
 #include <vector>
+#include "graphics.h"
+//#include "gameobject.h"
+//class Sprite;
+//class IGraphics;
+//class GameObject;
 
-class Sprite;
-class Graphics;
 class GameObject;
-
 
 class Component{
 protected:
@@ -23,20 +25,20 @@ public:
         this->owner = owner;
     }
     virtual void update(float deltatime){}
-    virtual void draw(Graphics *graphics){}
+    virtual void draw(IGraphics *IGraphics){}
 };
 
 
 class StaticSprite: public Component{
    private:
-       Sprite *sprite;
+       Sprite sprite;
    public:
        StaticSprite(){
        }
        StaticSprite(GameObject *owner): Component(owner){
        }
-       void setSprite(Sprite *sprite);
-       void draw(Graphics *graphics);
+       void setSprite(Sprite sprite);
+       void draw(IGraphics *IGraphics);
 };
 
 class SpriteList{
@@ -78,7 +80,7 @@ class AnimationController: public Component{
         }
 
         void update(float deltatime);
-        void draw(Graphics *Graphics);
+        void draw(IGraphics *IGraphics);
         Sprite* getSprite(){
             return animation->getCurrentSprite(current_frame);
         }

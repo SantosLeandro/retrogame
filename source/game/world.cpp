@@ -1,10 +1,12 @@
 #include "world.h"
+#include "../allegro/graphics.h"
+#include <cstring>
+#include "../core/component.h"
 
-
-void Level::testMap(Graphics *graphics){
+void Level::testMap(IGraphics *graphics){
 }
 
-void Level::load(const char* filename, Graphics *graphics){
+void Level::load(const char* filename, IGraphics *graphics){
     lua_State *state;
     state = luaL_newstate();
     luaL_openlibs(state);
@@ -69,17 +71,21 @@ void Level::load(const char* filename, Graphics *graphics){
         std::cout<<"NOT FOUND\n";
     }
 
-    tilemap.init(w,h,col,tilesize,graphics->getTexture(tex_file),tiles);
+    tilemap.init(w,h,col,tilesize, graphics->getTexture(tex_file),tiles);
 
 }
 
 
-int create_level(lua_State *state){
-    printf("_create_level\n");
-    lua_getfield(state, -1, "name");
-    const char* type = lua_tostring(state, -1);
-    printf("NAME: %s\n\n",type);
-    return 1;
+
+
+std::vector<Level*> LevelManager::level;
+
+int LevelManager::levelId = 0;
+
+Level* LevelManager::create(){
+    Level* l = new Level();
+    level.push_back(l);
+    return l;
 
 }
 
@@ -87,15 +93,71 @@ Level* LevelManager::load(const char* filename){
     lua_State *state;
     state = luaL_newstate();
     luaL_openlibs(state);
-    lua_pushcfunction(state, create_level);
-    lua_setglobal(state, "_create_level");
+    lua_pushcfunction(state, lua_create_level);
+    lua_setglobal(state, "_createLevel");
+    lua_pushcfunction(state, lua_create_object);
+    lua_setglobal(state, "_createObject");
+    lua_pushcfunction(state, lua_create_object_ext);
+    lua_setglobal(state, "_createObjectExt");
+    lua_pushcfunction(state, lua_add_component);
+    lua_setglobal(state, "_addComponent");
     int result = luaL_loadfile(state, filename);
     if(result != 0){
         std::cout<<"ERROR SCRIPT "<<lua_tostring(state, -1)<<"\n";
     }
     lua_pcall(state, 0, LUA_MULTRET, 0);
-
-
-
     return nullptr;
+}
+
+
+
+int lua_create_level(lua_State *state){
+    printf("_create_level\n");
+    Level* level = LevelManager::create();
+    lua_pushlightuserdata(state, level);
+    return 1;
+}
+
+int lua_create_object(lua_State *state){
+    printf("_create_object\n");
+    Level* level = (Level*)lua_touserdata(state, 1);
+    int x = lua_tointeger(state, 2);
+    int y = lua_tointeger(state, 3);
+    GameObject *object = level->newGameObject();
+    object->setPosition(Vector2(x,y));
+    lua_pushlightuserdata(state, object);
+    return 1;
+}
+
+int lua_add_component(lua_State *state){
+    printf("_add_component\n");
+    GameObject* object = (GameObject*)lua_touserdata(state, 1);
+    const char* type = lua_tostring(state, 2);
+    if(strcmp(type,"staticSprite")==0){
+        printf("  _add_static_sprite\n");
+        Sprite sprite;
+        const char* texture = lua_tostring(state, 3);
+        sprite.texture = Graphics::getInstance()->getTexture(texture);
+        StaticSprite *ss = object->addComponent<StaticSprite>();
+        ss->setSprite(sprite);
+    }
+    return 0;
+}
+
+int lua_create_object_ext(lua_State *state){
+    printf("_create_object_ext\n");
+    float x = lua_tonumber(state, 1);
+    float y = lua_tonumber(state, 2);
+    int len = lua_rawlen(state, 3);
+    std::cout<<"len "<<len<<"\n\n";
+    for(int i=1; i <= len;i++){
+        printf("i = %d\n",i);
+        lua_rawgeti(state, -1, i);
+        lua_getfield(state, 4,"type");
+        const char* type = lua_tostring(state,-1);
+        printf("TYPE: %s\n\n",type);
+        lua_pop(state,1);
+        lua_pop(state,1);
+    }
+    return 1;
 }

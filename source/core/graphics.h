@@ -24,7 +24,7 @@ class Sprite{
         int h = 32;
 };
 
-class Graphics{
+class IGraphics{
     public:
         virtual void init(){}
         virtual void drawTexture(float x, float y, void* texture){}

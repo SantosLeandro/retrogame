@@ -1,12 +1,12 @@
 #include "component.h"
 #include "gameobject.h"
 
-void StaticSprite::setSprite(Sprite *sprite){
+void StaticSprite::setSprite(Sprite sprite){
     this->sprite = sprite;
 }
 
-void StaticSprite::draw(Graphics *graphics){
-    graphics->drawSprite(owner->getPosition().x + sprite->w / 2, owner->getPosition().y + sprite->h / 2, *sprite);
+void StaticSprite::draw(IGraphics *graphics){
+    graphics->drawSprite(owner->getPosition().x + sprite.w / 2, owner->getPosition().y + sprite.h / 2, sprite);
 }
 
 void AnimationController::update(float deltatime){
@@ -14,7 +14,7 @@ void AnimationController::update(float deltatime){
     current_frame = (ticks / animation->speed) % animation->sequence.size();
 }
 
-void AnimationController::draw(Graphics *graphics){
+void AnimationController::draw(IGraphics *graphics){
     if(getSprite())
         graphics->drawSprite(owner->getPosition().x + getSprite()->w / 2,
                              owner->getPosition().y + getSprite()->h / 2,

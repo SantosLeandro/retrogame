@@ -17,11 +17,13 @@ class AllegroGame: public Game{
         ALLEGRO_EVENT_QUEUE* queue;
         ALLEGRO_DISPLAY* disp;
         ALLEGRO_EVENT event;
-        All_Graphics graphics;
+        //AllegroGraphics graphics;
         Level level;
+        LevelManager levelManager;
     private:
         void must_init(bool test, const char *description);
     public:
+
         void init();
         void update();
         void draw();
