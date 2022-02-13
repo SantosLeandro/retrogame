@@ -7,7 +7,7 @@
 class Player: public GameObject{
     private:
      Vector2 mv;
-     Sprite sprite;
+     //Sprite sprite;
     public:
         void init(IGraphics *IGraphics);
         void update(float deltatime){

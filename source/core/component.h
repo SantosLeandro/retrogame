@@ -51,23 +51,23 @@ class StaticSprite: public Component{
        void draw(IGraphics *IGraphics);
 };
 
-class SpriteList{
-    private:
-        Texture* texture;
-        std::vector<Rectangle> rect;
-        std::vector<Sprite> sprite;
-    public:
-        void addRect(const Rectangle &rect){
-            this->rect.push_back(rect);
-        }
-        void addSprite(Sprite sprite){
-            this->sprite.push_back(sprite);
-        }
-
-        Texture* getTexture(){return texture; }
-        Rectangle& getRectangle(int index){ return rect[index];}
-        Sprite* getSprite(int i){ return &sprite[i];}
-};
+//class SpriteList{
+//    private:
+//        Texture* texture;
+//        std::vector<Rectangle> rect;
+//        std::vector<Sprite> sprite;
+//    public:
+//        void addRect(const Rectangle &rect){
+//            this->rect.push_back(rect);
+//        }
+//        void addSprite(Sprite sprite){
+//            this->sprite.push_back(sprite);
+//        }
+//
+//        Texture* getTexture(){return texture; }
+//        Rectangle& getRectangle(int index){ return rect[index];}
+//        Sprite* getSprite(int i){ return &sprite[i];}
+//};
 
 
 class SpriteSheet{
@@ -90,11 +90,16 @@ class SpriteSheet{
 };
 
 class Animation{
-    public:
-        SpriteList *spriteList;
+    protected:
         SpriteSheet *spriteSheet;
+    public:
+        //SpriteList *spriteList;
+        void setSpriteSheet(SpriteSheet *spriteSheet){
+            this->spriteSheet = spriteSheet;
+        }
+        SpriteSheet* getSpriteSheet(){return spriteSheet;}
         unsigned int speed = 100;
-        Sprite* getCurrentSprite(int idx){return spriteList->getSprite(this->sequence[idx]); }
+        //Sprite* getCurrentSprite(int idx){return spriteList->getSprite(this->sequence[idx]); }
         std::vector<int> sequence;
 };
 
@@ -120,12 +125,17 @@ class AnimationController: public Component{
 
         void update(float deltatime);
         void draw(IGraphics *IGraphics);
+    private:
         Rectangle& getRectangle(){
-            return animation->spriteSheet->getRectangle(current_frame);
+            return animation->getSpriteSheet()->getRectangle(current_frame);
         }
-        Sprite* getSprite(){
-            return animation->getCurrentSprite(current_frame);
+
+        Texture* getTexture(){
+            return animation->getSpriteSheet()->getTexture();
         }
+//        Sprite* getSprite(){
+//            return animation->getCurrentSprite(current_frame);
+//        }
 };
 
 class PlayerController: public Component {
@@ -144,6 +154,7 @@ class ScriptBehaviour: public Component{
         void move_to(const Vector2 &v, float speed);
         void update(float deltatime);
 };
+
 
 
 //enum COMPONENET_ID {

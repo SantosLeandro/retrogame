@@ -27,10 +27,10 @@ void Graphics::drawTexture(float x, float y, void* bitmap){
     al_draw_bitmap((ALLEGRO_BITMAP*)bitmap, x, y, 0);
 }
 
-void Graphics::drawSprite(float x, float y, Sprite &sprite){
-    al_draw_bitmap_region((ALLEGRO_BITMAP*)sprite.texture->get(),
-    sprite.x, sprite.y, sprite.w, sprite.h, x, y,0);
-}
+//void Graphics::drawSprite(float x, float y, Sprite &sprite){
+//    al_draw_bitmap_region((ALLEGRO_BITMAP*)sprite.texture->get(),
+//    sprite.x, sprite.y, sprite.w, sprite.h, x, y,0);
+//}
 
 void Graphics::drawTile(float x, float y, float src_x, float src_y, int tilesize, void* texture){
     al_draw_bitmap_region((ALLEGRO_BITMAP*)texture,

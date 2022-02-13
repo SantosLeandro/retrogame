@@ -20,7 +20,7 @@ class Graphics: public IGraphics{
         static Graphics* getInstance();
         void init();
         void draw(const Vector2 &position, const Rectangle &rect, void* texture);
-        void drawSprite(float x, float y, Sprite &sprite);
+//        void drawSprite(float x, float y, Sprite &sprite);
         void drawTile(float x, float y, float src_x, float src_y, int tilesize, void* texture);
         void drawTexture(float x, float y, void* bitmap);
         void drawRectangle(float x, float y, float w, float h);
