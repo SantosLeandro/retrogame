@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdio>
 #include "../core/input.h"
+#include "../core/component.h"
 
 void AllegroGame::must_init(bool test, const char *description){
     if(!test){
@@ -66,8 +67,6 @@ void AllegroGame::init(){
 }
 
 void AllegroGame::run(){
-
-
     levelManager.load("level/level02.lua");
 //   SpriteList spriteList;
     //Sprite sprite;

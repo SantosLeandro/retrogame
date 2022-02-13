@@ -18,11 +18,11 @@ void AnimationController::update(float deltatime){
 
 void AnimationController::draw(IGraphics *graphics){
 
-    graphics->draw(owner->getPosition(),getRectangle(),animation->spriteSheet->getTexture());
-    if(getSprite())
-        graphics->drawSprite(owner->getPosition().x + getSprite()->w / 2,
-                             owner->getPosition().y + getSprite()->h / 2,
-                             *getSprite());
+    graphics->draw(owner->getPosition(),getRectangle(),getTexture());
+//    if(getSprite())
+//        graphics->drawSprite(owner->getPosition().x + getSprite()->w / 2,
+//                             owner->getPosition().y + getSprite()->h / 2,
+//                             *getSprite());
 }
 
 void PlayerController::update(float deltatime){
