@@ -13,7 +13,7 @@ void GameObject::draw(IGraphics *IGraphics){
     std::string text = "X: " + std::to_string(position.x) + " Y: " + std::to_string(position.y);
     for(auto &c: component)
                 c->draw(IGraphics);
-    IGraphics->drawText(text.c_str(), 0, 0);
+
     //IGraphics->drawSprite(position.x + sprite.w / 2, position.y + sprite.h / 2, sprite);
 
 //    if(animationController.getSprite())

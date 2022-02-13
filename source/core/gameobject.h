@@ -8,6 +8,7 @@
 #include <map>
 #include <iostream>
 #include <vector>
+#include <memory>
 
 
 
@@ -27,13 +28,13 @@ class GameObject{
 
         float getWidth(){return w;}
         float getHeight(){return h;}
-        Vector2 getPosition(){return position;}
+        Vector2& getPosition(){return position;}
         void setPosition(const Vector2 &position){
             this->position = position;
         }
 
-        void move(Vector2 vector2){
-            position = position + vector2;
+        void move(const Vector2 &vector2){
+            position += vector2;
         }
 
         template <typename T>
@@ -42,6 +43,14 @@ class GameObject{
             comp->init(this);
             component.push_back(comp);
             return comp;
+        }
+
+        template <typename T>
+        T* getComponent(){
+            for(auto &c: component){
+                if(std::dynamic_pointer_cast<T>(c))
+                    return (T*)c;
+            }
         }
 
         virtual void init(IGraphics *IGraphics){
