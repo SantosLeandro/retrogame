@@ -15,8 +15,27 @@ public:
         this->y = y;
     }
     ~Vector2(){}
+
+    bool operator==(const Vector2& v){
+        if(this->x == v.x && this->y == v.y)
+            return true;
+        return false;
+    }
     Vector2 operator+(const Vector2& v) {
         return Vector2(this->x + v.x, this->y+v.y);
+    }
+    Vector2 operator-(const Vector2& v) {
+        return Vector2(this->x - v.x, this->y - v.y);
+    }
+    Vector2& operator+=(const Vector2& v) {
+        this->x += v.x;
+        this->y += v.y;
+        return *this;
+    }
+    Vector2& operator-=(const Vector2& v) {
+        this->x -= v.x;
+        this->y -= v.y;
+        return *this;
     }
 };
 
