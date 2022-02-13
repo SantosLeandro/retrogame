@@ -6,6 +6,7 @@
 #include <vector>
 #include "graphics.h"
 #include "vector2.h"
+#include <lua.hpp>
 //#include "gameobject.h"
 //class Sprite;
 //class IGraphics;
@@ -141,17 +142,26 @@ class AnimationController: public Component{
 class PlayerController: public Component {
    public:
         void update(float deltatime);
+        void draw(IGraphics *graphics);
 
 };
 
 class ScriptBehaviour: public Component{
     private:
         std::string functionName;
-        bool hasEnded = false;
+        bool hasEnded = true;
         Vector2 target;
-        float speed;
+        Vector2 startPosition;
+        Vector2 speed;
+        lua_State *state;
     public:
-        void move_to(const Vector2 &v, float speed);
+        void setFunctionName(const char *funcName){
+            this->functionName = funcName;
+        }
+        void setState(lua_State *state){
+            this->state = state;
+        }
+        void move_to(const Vector2 &v, const Vector2 &speed);
         void update(float deltatime);
 };
 

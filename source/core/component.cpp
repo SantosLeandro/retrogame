@@ -1,5 +1,7 @@
 #include "component.h"
 #include "gameobject.h"
+#include <string>
+
 
 void StaticSprite::setSprite(Texture* texture, const Rectangle &rect){
     this->texture = texture;
@@ -33,10 +35,33 @@ void PlayerController::update(float deltatime){
 
 }
 
-void ScriptBehaviour::move_to(const Vector2 &v, float speed){
-    target = v;
+void PlayerController::draw(IGraphics *graphics){
+    std::string text = "X: " + std::to_string(owner->getPosition().x) + " Y: " + std::to_string(owner->getPosition().x);
+    graphics->drawText(text.c_str(), 0, 0);
+}
+
+void ScriptBehaviour::move_to(const Vector2 &v, const Vector2 &speed){
+    this->target = v;
+    this->speed = speed;
+    this->startPosition = owner->getPosition();
 }
 
 void ScriptBehaviour::update(float deltatime){
+    if(hasEnded){
+        lua_getglobal(state, functionName.c_str());
+        lua_pushlightuserdata(state, this);
+        lua_pcall(state, 1, 1, 0);
+        lua_pop(state, 1);
+        hasEnded = false;
+    }
+    if(!hasEnded){
+
+        owner->getPosition() +=  speed;
+        //printf("POSICAO x: %d y: %d", owner->getPosition().x, owner->getPosition().y);
+    }
+    if( owner->getPosition() == target){
+        hasEnded = true;
+        printf("chegou\n");
+    }
 
 }
