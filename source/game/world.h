@@ -50,6 +50,7 @@ int lua_create_level(lua_State *L);
 int lua_create_object(lua_State *L);
 int lua_add_component(lua_State *L);
 int lua_create_object_ext(lua_State *state);
+int lua_move_to(lua_State *state);
 
 class LevelManager{
         static std::vector<Level*> level;

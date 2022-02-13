@@ -101,11 +101,13 @@ Level* LevelManager::load(const char* filename){
     lua_setglobal(state, "_createObjectExt");
     lua_pushcfunction(state, lua_add_component);
     lua_setglobal(state, "_addComponent");
+    lua_pushcfunction(state, lua_move_to);
+    lua_setglobal(state, "_moveTo");
     int result = luaL_loadfile(state, filename);
     if(result != 0){
         std::cout<<"ERROR SCRIPT "<<lua_tostring(state, -1)<<"\n";
     }
-    lua_pcall(state, 0, LUA_MULTRET, 0);
+    lua_pcall(state, 0, 1, 0);
     return nullptr;
 }
 
@@ -164,6 +166,11 @@ int lua_create_object_ext(lua_State *state){
         if(strcmp(type,"playerBehaviour")==0){
             object->addComponent<PlayerController>();
         }
+        else if(strcmp(type,"scriptBehaviour")==0){
+            ScriptBehaviour *s = object->addComponent<ScriptBehaviour>();
+            s->setFunctionName("testScript");
+            s->setState(state);
+        }
         else if (strcmp(type,"staticSprite")==0){
 
              lua_getfield(state,5,"x");
@@ -195,4 +202,14 @@ int lua_create_object_ext(lua_State *state){
     }
      lua_pushlightuserdata(state, object);
     return 1;
+}
+
+int lua_move_to(lua_State *state){
+    printf("_moveTo\n");
+    ScriptBehaviour* s = (ScriptBehaviour*)lua_touserdata(state, 1);
+    int x = lua_tointeger(state, 2);
+    int y = lua_tointeger(state, 3);
+    int sx = lua_tointeger(state, 4);
+    int sy = lua_tointeger(state, 5);
+    s->move_to(Vector2(x,y),Vector2(sx,sy));
 }
