@@ -3,7 +3,7 @@ PROJ_NAME=game
  
 # .c files
 #C_SOURCE=$(wildcard ./source/*.c)
-C_SOURCE=$(wildcard ./source/*.cpp ./source/core/*.cpp ./source/game/*.cpp ./source/allegro/*.cpp )
+C_SOURCE=$(wildcard ./source/*.cpp ./source/core/*.cpp ./source/game/*.cpp ./source/allegro/*.cpp ./source/app/*.cpp)
 
  
 # .h files
@@ -46,7 +46,7 @@ $(PROJ_NAME): $(OBJ)
 	$(CC) $< $(LIBS) $(CC_FLAGS) -o $@ 
 	@ echo ' '
  
-./objects/main.o: ./source/main.cpp $(H_SOURCE)
+./objects/app/main.o: ./source/app/main.cpp $(H_SOURCE)
 	@ echo 'Building target using GCC compiler: $<'
 	$(CC) $< $(LIBS) $(CC_FLAGS) -o $@ 
 	@ echo ' '
@@ -55,6 +55,7 @@ $(PROJ_NAME): $(OBJ)
  
 objFolder:
 	@ mkdir -p objects
+	@ mkdir -p objects/app
 	@ mkdir -p objects/allegro
 	@ mkdir -p objects/game
 	@ mkdir -p objects/core
@@ -62,10 +63,12 @@ objFolder:
 run:
 	@ ./bin/$(PROJ_NAME)
 clean:
+	@ $(RM) ./objects/app/*.o $(PROJ_NAME) *~
 	@ $(RM) ./objects/game/*.o $(PROJ_NAME) *~
 	@ $(RM) ./objects/core/*.o $(PROJ_NAME) *~
 	@ $(RM) ./objects/allegro/*.o $(PROJ_NAME) *~
 	@ $(RM) ./objects/*.o $(PROJ_NAME) *~
+	@ rmdir objects/app
 	@ rmdir objects/game
 	@ rmdir objects/core
 	@ rmdir objects/allegro

@@ -1,4 +1,4 @@
-#include "allegro/game.h"
+#include "../allegro/game.h"
 
 int main(){
   AllegroGame *game = new AllegroGame();
