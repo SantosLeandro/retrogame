@@ -1,11 +1,6 @@
 
 print("INICIANDO ISSO AQUI")
 
-function createPlayer(level,x, y)
-	local player = _createObject(level, x, y)
-	_addComponent(player, "staticSprite", "img/test.png")
-end
-
 
 function movingObject(obj)
 	while 1 do
@@ -18,9 +13,9 @@ end
 
 function movingObject2(obj)
 	while 1 do
-		_moveTo(obj, 400, 400, 1, 1)
+		_moveTo(obj, 400, 0, 1, 0)
 		coroutine.yield()
-		_moveTo(obj, 0, 0, -1, -1)
+		_moveTo(obj, 0, 0, 0, -1)
 		coroutine.yield()
 	end
 end
@@ -42,8 +37,8 @@ level = _createLevel()
 _createObjectExt(level, 23,45,components)
 
 obj1 = _createObjectExt(level, 0,0,teste)
-obj2 = _createObjectExt(level, 200,200,teste)
-
+obj2 = _createObjectExt(level, 0,0,teste)
+print(obj1)
 coTest = {}
 coTest[obj1] ={ behaviour = coroutine.create(movingObject)}
 coTest[obj2] ={ behaviour = coroutine.create(movingObject2)}

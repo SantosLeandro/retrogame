@@ -1,6 +1,5 @@
 #include "gameobject.h"
-#include "component.h"
-
+#include "../components/component.h"
 
 void GameObject::update(float deltatime){
             for(auto &c: m_componentList)

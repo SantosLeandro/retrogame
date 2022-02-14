@@ -4,8 +4,8 @@
 #include <map>
 #include <iostream>
 #include <vector>
-#include "graphics.h"
-#include "vector2.h"
+#include "../core/graphics.h"
+#include "../core/vector2.h"
 #include <lua.hpp>
 
 

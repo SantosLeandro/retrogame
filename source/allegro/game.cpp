@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdio>
 #include "../core/input.h"
-#include "../core/component.h"
+#include "../components/component.h"
 
 void AllegroGame::must_init(bool test, const char *description){
     if(!test){

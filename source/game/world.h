@@ -15,11 +15,7 @@ class Level{
     public:
         void load(const char* filename, IGraphics *graphics);
         void testMap(IGraphics *graphics);
-        GameObject* newGameObject(){
-            auto *object = new GameObject();
-            gameObject.push_back(std::move(object));
-            return gameObject.back();
-        }
+        GameObject* newGameObject();
         GameObject* addGameObject(int type, IGraphics *graphics){
             switch(type){
                 case 0:

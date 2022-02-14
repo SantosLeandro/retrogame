@@ -1,10 +1,14 @@
 #include "world.h"
 #include "../allegro/graphics.h"
 #include <cstring>
-#include "../core/component.h"
+#include "../components/component.h"
 
-void Level::testMap(IGraphics *graphics){
+GameObject* Level::newGameObject(){
+    auto *object = new GameObject();
+    gameObject.push_back(std::move(object));
+    return gameObject.back();
 }
+
 
 void Level::load(const char* filename, IGraphics *graphics){
     lua_State *state;
@@ -107,7 +111,7 @@ Level* LevelManager::load(const char* filename){
     if(result != 0){
         std::cout<<"ERROR SCRIPT "<<lua_tostring(state, -1)<<"\n";
     }
-    lua_pcall(state, 0, 1, 0);
+    lua_pcall(state, 0, LUA_MULTRET, 0);
     return nullptr;
 }
 
@@ -167,8 +171,8 @@ int lua_create_object_ext(lua_State *state){
             object->addComponent<PlayerController>();
         }
         else if(strcmp(type,"scriptBehaviour")==0){
+            printf("scriptSetState\n");
             ScriptBehaviour *s = object->addComponent<ScriptBehaviour>();
-
             s->setState(state);
         }
         else if (strcmp(type,"staticSprite")==0){
@@ -212,4 +216,5 @@ int lua_move_to(lua_State *state){
     int sx = lua_tointeger(state, 4);
     int sy = lua_tointeger(state, 5);
     s->move_to(Vector2(x,y),Vector2(sx,sy));
+    return 1;
 }

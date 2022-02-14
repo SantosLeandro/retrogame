@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "component.h"
 #include "vector2.h"
 #include "graphics.h"
 #include "input.h"
@@ -10,12 +9,7 @@
 #include <vector>
 #include <memory>
 
-
-
-
 class Component;
-//class AnimationList;
-//class AnimationController;
 
 class GameObject{
     protected:
@@ -26,7 +20,6 @@ class GameObject{
         void setPosition(const Vector2 &position){
             this->m_position = position;
         }
-
         void move(const Vector2 &vector2){
             m_position += vector2;
         }
