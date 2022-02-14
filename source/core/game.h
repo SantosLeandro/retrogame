@@ -5,9 +5,9 @@ class Game
 private:
 
 protected:
-    bool done;
-    bool isRunning;
-    int *key;
+    bool m_done;
+    bool m_isRunning;
+    int *m_pKey;
 public:
     virtual void init() = 0;
     virtual void run() = 0;
