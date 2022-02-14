@@ -7,30 +7,24 @@
 #include "graphics.h"
 #include "vector2.h"
 #include <lua.hpp>
-//#include "gameobject.h"
-//class Sprite;
-//class IGraphics;
-//class GameObject;
+
 
 class GameObject;
 
 class Component{
 protected:
-    GameObject *owner;
+
+    GameObject *m_pOwner;
     int id = -1;
 public:
     Component(){
     }
     Component(GameObject *owner){
-        this->owner = owner;
+        m_pOwner = owner;
 
     }
-    void generateId(int id){
-        if(this->id == -1)
-            this->id = id;
-    }
     virtual void init(GameObject *owner) {
-        this->owner = owner;
+         m_pOwner = owner;
     }
     virtual void update(float deltatime){}
     virtual void draw(IGraphics *IGraphics){}
@@ -39,8 +33,8 @@ public:
 
 class StaticSprite: public Component{
    private:
-       Texture* texture;
-       Rectangle rect;
+       Texture* m_pTexture;
+       Rectangle m_rectangle;
 
    public:
        StaticSprite(){
@@ -52,136 +46,98 @@ class StaticSprite: public Component{
        void draw(IGraphics *IGraphics);
 };
 
-//class SpriteList{
-//    private:
-//        Texture* texture;
-//        std::vector<Rectangle> rect;
-//        std::vector<Sprite> sprite;
-//    public:
-//        void addRect(const Rectangle &rect){
-//            this->rect.push_back(rect);
-//        }
-//        void addSprite(Sprite sprite){
-//            this->sprite.push_back(sprite);
-//        }
-//
-//        Texture* getTexture(){return texture; }
-//        Rectangle& getRectangle(int index){ return rect[index];}
-//        Sprite* getSprite(int i){ return &sprite[i];}
-//};
-
-
 class SpriteSheet{
     private:
-        Texture *texture;
-        std::vector<Rectangle> rectangle;
+        Texture *m_pTexture;
+        std::vector<Rectangle> m_rectangleList;
     public:
         SpriteSheet(){}
         SpriteSheet(Texture *texture){
-            this->texture = texture;
+            m_pTexture = texture;
         }
         void setTexture(Texture *texture){
-            this->texture = texture;
+            m_pTexture = texture;
         }
-        Texture* getTexture(){return texture;}
-        Rectangle& getRectangle(int index){ return rectangle[index];}
+        Texture* getTexture(){return m_pTexture;}
+        Rectangle& getRectangle(int index){ return m_rectangleList[index];}
         void addRectangle(int x, int y, int w, int h){
-            rectangle.push_back({x,y,w,h});
+            m_rectangleList.push_back({x,y,w,h});
         }
 };
 
 class Animation{
-    protected:
-        SpriteSheet *spriteSheet;
+    private:
+        SpriteSheet *m_pSpriteSheet;
+        int m_fps = 100;
     public:
-        //SpriteList *spriteList;
         void setSpriteSheet(SpriteSheet *spriteSheet){
-            this->spriteSheet = spriteSheet;
+            m_pSpriteSheet = spriteSheet;
         }
-        SpriteSheet* getSpriteSheet(){return spriteSheet;}
-        unsigned int speed = 100;
-        //Sprite* getCurrentSprite(int idx){return spriteList->getSprite(this->sequence[idx]); }
-        std::vector<int> sequence;
+        SpriteSheet* getSpriteSheet(){return m_pSpriteSheet;}
+        void setFps(int fps){
+            if(fps == 0){
+                m_fps = 1;
+            }
+            else
+                m_fps = fps;
+
+        }
+
+        int getFps(){
+            return m_fps;
+        }
+        std::vector<int> m_sequenceList;
 };
 
 class AnimationList{
     public:
-        std::map<std::string, Animation> animation;
-        Animation get(std::string name){ return animation[name];}
+        std::map<std::string, Animation> m_animationList;
+        Animation get(std::string name){ return m_animationList[name];}
 };
 
 
 class AnimationController: public Component{
     private:
-        unsigned int ticks = 0;
-        unsigned int current_frame = 0;
-        AnimationList *animationList;
-        Animation *animation;
+        unsigned int m_ticks = 0;
+        unsigned int m_current_frame = 0;
+        AnimationList *m_pAnimationList;
+        Animation *m_pAnimation;
     public:
         void setAnimation(Animation *animation){
-            this->animation = animation;
-            current_frame = 0;
-            ticks = 0;
+            m_pAnimation = animation;
+            m_current_frame = 0;
+            m_ticks = 0;
         }
 
         void update(float deltatime);
         void draw(IGraphics *IGraphics);
     private:
         Rectangle& getRectangle(){
-            return animation->getSpriteSheet()->getRectangle(current_frame);
+            return m_pAnimation->getSpriteSheet()->getRectangle(m_current_frame);
         }
 
         Texture* getTexture(){
-            return animation->getSpriteSheet()->getTexture();
+            return m_pAnimation->getSpriteSheet()->getTexture();
         }
-//        Sprite* getSprite(){
-//            return animation->getCurrentSprite(current_frame);
-//        }
 };
 
 class PlayerController: public Component {
    public:
         void update(float deltatime);
         void draw(IGraphics *graphics);
-
 };
 
 class ScriptBehaviour: public Component{
     private:
-        std::string functionName;
         bool hasEnded = true;
         Vector2 target;
         Vector2 startPosition;
         Vector2 speed;
         lua_State *state;
     public:
-        void setFunctionName(const char *funcName){
-            this->functionName = funcName;
-        }
         void setState(lua_State *state){
             this->state = state;
         }
         void move_to(const Vector2 &v, const Vector2 &speed);
         void update(float deltatime);
 };
-
-
-
-//enum COMPONENET_ID {
-//    STATIC_SPRITE = 0,
-//    ANIMATED_SPRITE,
-//    PLAYER_BEHAVIOUR,
-//    SCRIPT_BEHAVIOUR
-//};
-//
-//class ComponentManager{
-//    public:
-//        static Component* createComponent(int cid){
-//            switch(cid){
-//            case STATIC_SPRITE: return new StaticSprite(); break;
-//            case ANIMATED_SPRITE: return new StaticSprite(); break;
-//            case PLAYER_BEHAVIOUR: return new PlayerController(); break;
-//            case SCRIPT_BEHAVIOUR: return new ScriptBehaviour(); break;
-//            }
-//        }
-//};

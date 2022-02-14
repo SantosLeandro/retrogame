@@ -32,34 +32,35 @@ void AllegroGame::init(){
 
     must_init(al_install_keyboard(),"keyboard");
 
-    timer = al_create_timer(1.0 / 30.0);
-    must_init(timer,"timer 1/30");
+    m_pTimer = al_create_timer(1.0 / 30.0);
+    must_init(m_pTimer,"timer 1/30");
 
-    queue = al_create_event_queue();
-    must_init(queue,"queue");
+    m_pQueue = al_create_event_queue();
+    must_init(m_pQueue,"queue");
 
-    disp = al_create_display(width, height);
-    must_init(disp, "display");
+    m_pDisplay = al_create_display(width, height);
+    must_init(m_pDisplay, "display");
 
     must_init(al_init_image_addon(),"image addon" );
 
 
-    al_register_event_source(queue, al_get_keyboard_event_source());
-    al_register_event_source(queue, al_get_display_event_source(disp));
-    al_register_event_source(queue, al_get_timer_event_source(timer));
+    al_register_event_source(m_pQueue, al_get_keyboard_event_source());
+    al_register_event_source(m_pQueue, al_get_display_event_source(m_pDisplay));
+    al_register_event_source(m_pQueue, al_get_timer_event_source(m_pTimer));
 
-    done = false;
-    al_start_timer(timer);
+    m_done = false;
+    al_start_timer(m_pTimer);
 
-    key = new int[ALLEGRO_KEY_MAX];
+    m_pKey = new int[ALLEGRO_KEY_MAX];
     for(int i=0; i < ALLEGRO_KEY_MAX;i++){
-        key[i] = 0;
+        m_pKey[i] = 0;
     }
 
     Graphics::getInstance()->init();
 
-    Keyboard::init(key);
+    Keyboard::init(m_pKey);
     Graphics::getInstance()->init();
+    Graphics::getInstance()->loadTexture("img/test.png");
     Graphics::getInstance()->loadTexture("img/test.png");
     Graphics::getInstance()->loadTexture("img/tileset.png");
 
@@ -67,7 +68,7 @@ void AllegroGame::init(){
 }
 
 void AllegroGame::run(){
-    levelManager.load("level/level02.lua");
+     m_levelManager.load("level/level02.lua");
 //   SpriteList spriteList;
     //Sprite sprite;
    //sprite.texture = Graphics::getInstance()->getTexture("img/test.png");
@@ -93,26 +94,26 @@ void AllegroGame::run(){
 
 
     bool redraw = true;
-    while(!done){
-         al_wait_for_event(queue, &event);
-         switch(event.type)
+    while(!m_done){
+         al_wait_for_event(m_pQueue, &m_event);
+         switch(m_event.type)
          {
             case ALLEGRO_EVENT_TIMER:
             AllegroGame::update();
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
-                    key[i] &= KEY_SEEN;
+                    m_pKey[i] &= KEY_SEEN;
             redraw = true;
             break;
             case ALLEGRO_EVENT_KEY_DOWN:
-                key[event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;; break;
+                m_pKey[m_event.keyboard.keycode] = KEY_SEEN | KEY_RELEASED;; break;
             case ALLEGRO_EVENT_KEY_UP:
-                key[event.keyboard.keycode] &= KEY_RELEASED; break;
+                m_pKey[m_event.keyboard.keycode] &= KEY_RELEASED; break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
-                done = true;
+                m_done = true;
             break;
          }
 
-         if(redraw && al_is_event_queue_empty(queue)){
+         if(redraw && al_is_event_queue_empty(m_pQueue)){
              AllegroGame::draw();
              redraw = false;
          }
@@ -122,18 +123,18 @@ void AllegroGame::run(){
 }
 
 void AllegroGame::update(){
-    levelManager.update(0);
+    m_levelManager.update(0);
 }
 
 void AllegroGame::draw(){
     Graphics::getInstance()->clearScreen(0,0,0);
-    levelManager.draw(Graphics::getInstance());
+    m_levelManager.draw(Graphics::getInstance());
     Graphics::getInstance()->flipDisplay();
 }
 
 void AllegroGame::quit(){
     Graphics::getInstance()->quit();
-     al_destroy_display(disp);
-    al_destroy_timer(timer);
-    al_destroy_event_queue(queue);
+    al_destroy_display(m_pDisplay);
+    al_destroy_timer(m_pTimer);
+    al_destroy_event_queue(m_pQueue);
 }

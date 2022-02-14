@@ -1,12 +1,12 @@
 #pragma once
 
 class Keyboard{
-    static int *key;
+    static int *s_pKey;
     public:
-    static void init(int *k){
-       key = k;
+    static void init(int *keys){
+       s_pKey = keys;
     }
     static int getKeyDown(int keycode){
-        return key[keycode];
+        return s_pKey[keycode];
     }
 };

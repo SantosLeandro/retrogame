@@ -168,7 +168,6 @@ int lua_create_object_ext(lua_State *state){
         }
         else if(strcmp(type,"scriptBehaviour")==0){
             ScriptBehaviour *s = object->addComponent<ScriptBehaviour>();
-            s->setFunctionName("testScript");
             s->setState(state);
         }
         else if (strcmp(type,"staticSprite")==0){

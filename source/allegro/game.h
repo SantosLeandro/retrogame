@@ -13,13 +13,13 @@
 
 class AllegroGame: public Game{
     private:
-        ALLEGRO_TIMER* timer;
-        ALLEGRO_EVENT_QUEUE* queue;
-        ALLEGRO_DISPLAY* disp;
-        ALLEGRO_EVENT event;
+        ALLEGRO_TIMER* m_pTimer;
+        ALLEGRO_EVENT_QUEUE* m_pQueue;
+        ALLEGRO_DISPLAY* m_pDisplay;
+        ALLEGRO_EVENT m_event;
         //AllegroGraphics graphics;
-        Level level;
-        LevelManager levelManager;
+        Level m_level;
+        LevelManager m_levelManager;
     private:
         void must_init(bool test, const char *description);
     public:

@@ -12,9 +12,9 @@ class Player: public GameObject{
         void init(IGraphics *IGraphics);
         void update(float deltatime){
             if(Keyboard::getKeyDown(1))
-               position.x -= 1;
+               m_position.x -= 1;
             else if(Keyboard::getKeyDown(4))
-               position.x += 1;
+               m_position.x += 1;
 
             GameObject::update(deltatime);
         }

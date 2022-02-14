@@ -16,11 +16,20 @@ function movingObject(obj)
 	end
 end
 
+function movingObject2(obj)
+	while 1 do
+		_moveTo(obj, 400, 400, 1, 1)
+		coroutine.yield()
+		_moveTo(obj, 0, 0, -1, -1)
+		coroutine.yield()
+	end
+end
+
 coTest= {}
 
-function testScript(obj)
-	if coroutine.status(coTest[obj].behaviour) ~= "dead" then
-		coroutine.resume(coTest[obj].behaviour, obj)
+function nextTask(owner, obj)
+	if coroutine.status(coTest[owner].behaviour) ~= "dead" then
+		coroutine.resume(coTest[owner].behaviour, obj)
 	end
 end
 
@@ -32,12 +41,12 @@ level = _createLevel()
 
 _createObjectExt(level, 23,45,components)
 
-mov = _createObjectExt(level, 0,0,teste)
+obj1 = _createObjectExt(level, 0,0,teste)
+obj2 = _createObjectExt(level, 200,200,teste)
 
---behaviour = coroutine.create(movingObject)
 coTest = {}
-coTest[mov] ={ behaviour = coroutine.create(movingObject)}
-
+coTest[obj1] ={ behaviour = coroutine.create(movingObject)}
+coTest[obj2] ={ behaviour = coroutine.create(movingObject2)}
 
 
 
