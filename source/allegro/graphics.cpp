@@ -1,7 +1,5 @@
 #include "graphics.h"
 
-
-
 Graphics* Graphics::s_pInstance = 0;
 
 Graphics* Graphics::getInstance()
@@ -15,7 +13,7 @@ Graphics* Graphics::getInstance()
 }
 
 void Graphics::init(){
-   font = al_create_builtin_font();
+   m_pFont = al_create_builtin_font();
 }
 
 void Graphics::draw(const Vector2 &position, const Rectangle &rect, void* texture){
@@ -26,11 +24,6 @@ void Graphics::draw(const Vector2 &position, const Rectangle &rect, void* textur
 void Graphics::drawTexture(float x, float y, void* bitmap){
     al_draw_bitmap((ALLEGRO_BITMAP*)bitmap, x, y, 0);
 }
-
-//void Graphics::drawSprite(float x, float y, Sprite &sprite){
-//    al_draw_bitmap_region((ALLEGRO_BITMAP*)sprite.texture->get(),
-//    sprite.x, sprite.y, sprite.w, sprite.h, x, y,0);
-//}
 
 void Graphics::drawTile(float x, float y, float src_x, float src_y, int tilesize, void* texture){
     al_draw_bitmap_region((ALLEGRO_BITMAP*)texture,
@@ -44,21 +37,33 @@ void Graphics::drawRectangle(float x, float y, float w, float h){
 
 void Graphics::drawText(const char* text, float x, float y){
     //al_draw_textf(font, al_map_rgb(255, 255, 255), x, y, 0, "X: %.1f Y: %.1f", x, y);
-    al_draw_textf(font, al_map_rgb(255, 255, 255), x, y, 0, text);
+    al_draw_textf(m_pFont, al_map_rgb(255, 255, 255), x, y, 0, text);
 }
 void Graphics::loadTexture(const char* filename){
+  std::map<std::string, Texture*>::iterator it;
+   it = m_textureMap.find(filename);
+   if(it != m_textureMap.end()){
+        printf("Texture %s already loaded!\n", filename);
+        return;
+   }
     ALLEGRO_BITMAP *bmp = al_load_bitmap(filename);
     if(!bmp){
-        printf("file not found!");
+        printf("file not found!\n");
         return;
     }
     printf("file %s loaded\n",filename);
-    texture.insert(std::pair<std::string,Texture*>(filename,new Texture(bmp)));
+    m_textureMap.insert(std::pair<std::string,Texture*>(filename,new Texture(bmp)));
 }
 
 
 Texture* Graphics::getTexture(const char* filename){
-   return texture[filename];
+   std::map<std::string, Texture*>::iterator it;
+   it = m_textureMap.find(filename);
+   if(it == m_textureMap.end()){
+        printf("Texture %s not found!\n", filename);
+        return nullptr;
+   }
+   return m_textureMap[filename];
 }
 
 void Graphics::flipDisplay(){
@@ -70,11 +75,11 @@ void Graphics::clearScreen(int r, int g, int b){
 }
 
 void Graphics::quit(){
-    for (auto &it : texture){
+    for (auto &it : m_textureMap){
             al_destroy_bitmap((ALLEGRO_BITMAP*)it.second->get());
             delete it.second;
     }
-    texture.clear();
+    m_textureMap.clear();
 }
 
 
