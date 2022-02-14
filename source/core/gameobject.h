@@ -20,13 +20,8 @@ class Component;
 class GameObject{
     protected:
         Vector2 m_position;
-        float m_w = 32;
-        float m_h = 32;
     public:
         std::vector<Component*> m_componentList;
-
-        float getWidth(){return m_w;}
-        float getHeight(){return m_h;}
         Vector2& getPosition(){return m_position;}
         void setPosition(const Vector2 &position){
             this->m_position = position;
@@ -59,7 +54,7 @@ class GameObject{
 
         virtual void draw(IGraphics *IGraphics);
 
-        bool checkCollision(GameObject &go);
+        bool checkCollision(GameObject *go);
 
 };
 

@@ -141,3 +141,20 @@ class ScriptBehaviour: public Component{
         void move_to(const Vector2 &v, const Vector2 &speed);
         void update(float deltatime);
 };
+
+
+class BoxCollider: public Component{
+    private:
+        int m_width;
+        int m_height;
+    public:
+        void setSize(int w, int h){
+            m_width = w;
+            m_height = h;
+        }
+        Vector2 getPosition();
+        int Width(){return m_width;}
+        int Height(){return m_height;}
+        bool Overlap(BoxCollider &other);
+
+};

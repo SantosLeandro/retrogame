@@ -56,5 +56,16 @@ void ScriptBehaviour::update(float deltatime){
         hasEnded = true;
         printf("chegou\n");
     }
+}
 
+Vector2 BoxCollider::getPosition(){ return m_pOwner->getPosition();}
+
+bool BoxCollider::Overlap(BoxCollider &other){
+    if( (m_pOwner->getPosition().x + m_width  / 2 > other.getPosition().x - other.Width()  / 2) &&
+        (m_pOwner->getPosition().x - m_width  / 2 < other.getPosition().x + other.Width()  / 2) &&
+        (m_pOwner->getPosition().y + m_height / 2 > other.getPosition().y - other.Height() / 2) &&
+        (m_pOwner->getPosition().y - m_height / 2 < other.getPosition().y + other.Height() / 2))
+        return true;
+    else
+        return false;
 }
