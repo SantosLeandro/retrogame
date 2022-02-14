@@ -41,6 +41,7 @@
 		<Unit filename="source/allegro/game.h" />
 		<Unit filename="source/allegro/graphics.cpp" />
 		<Unit filename="source/allegro/graphics.h" />
+		<Unit filename="source/app/main.cpp" />
 		<Unit filename="source/core/component.cpp" />
 		<Unit filename="source/core/component.h" />
 		<Unit filename="source/core/game.cpp" />
@@ -57,7 +58,6 @@
 		<Unit filename="source/game/tilemap.h" />
 		<Unit filename="source/game/world.cpp" />
 		<Unit filename="source/game/world.h" />
-		<Unit filename="source/main.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
