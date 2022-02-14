@@ -3,17 +3,17 @@
 class Game
 {
 private:
-    
+
 protected:
     bool done;
     bool isRunning;
     int *key;
 public:
-    virtual void init();
-    virtual void run();
-    virtual void update();
-    virtual void draw();
-    virtual void quit();
+    virtual void init() = 0;
+    virtual void run() = 0;
+    virtual void update() = 0;
+    virtual void draw() = 0;
+    virtual void quit() = 0;
 };
 
 
