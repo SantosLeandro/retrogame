@@ -1,5 +1,3 @@
-
-
 #include "component.h"
 #include "../core/gameobject.h"
 #include <string>
