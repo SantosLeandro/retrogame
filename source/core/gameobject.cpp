@@ -13,13 +13,10 @@ void GameObject::draw(IGraphics *IGraphics){
 }
 
 bool GameObject::checkCollision(GameObject *go){
-//     auto collider = go->getComponent<PlayerController>();
-//    if (m_position.x + m_w > go.getPosition().x &&
-//        m_position.x < go.getPosition().x + go.getWidth() &&
-//        m_position.y + m_h < go.getPosition().y &&
-//        m_position.y > go.getPosition().y + go.getHeight())
-//        return true;
-//    else
-//        return false;
+	auto colliderOther = go->getComponent<BoxCollider>();
+	auto collider = getComponent<BoxCollider>();
+	if(collider){
+		return collider->Overlap(colliderOther);
+	}
     return false;
 }

@@ -15,7 +15,7 @@ class GameObject{
     protected:
         Vector2 m_position;
     public:
-        std::vector<Component*> m_componentList;
+        std::vector<std::shared_ptr<Component>> m_componentList;
         Vector2& getPosition(){return m_position;}
         void setPosition(const Vector2 &position){
             this->m_position = position;
@@ -25,19 +25,20 @@ class GameObject{
         }
 
         template <typename T>
-        T* addComponent(){
-            T *comp = new T();
+        std::shared_ptr<T> addComponent(){
+            auto comp = std::make_shared<T>();
             comp->init(this);
             m_componentList.push_back(comp);
             return comp;
         }
 
         template <typename T>
-        T* getComponent(){
+        std::shared_ptr<T> getComponent(){
             for(auto &c: m_componentList){
                 if(std::dynamic_pointer_cast<T>(c))
-                    return (T*)c;
+                    return std::dynamic_pointer_cast<T>(c);
             }
+			return nullptr;
         }
 
         virtual void init(IGraphics *IGraphics){

@@ -30,10 +30,7 @@ class Level{
         void clear(){
 
         }
-        virtual void update(){
-            for(auto &o: gameObject)
-                o->update(0);
-        }
+        void update();
 
         virtual void draw(IGraphics *graphics){
         tilemap.draw(graphics);

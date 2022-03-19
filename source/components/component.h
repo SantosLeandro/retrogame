@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <memory>
 
 class GameObject;
 
@@ -18,6 +19,9 @@ protected:
 public:
   Component() {}
   Component(GameObject *owner) { m_pOwner = owner; }
+  GameObject* getOwner(){
+	return m_pOwner;
+  }
   virtual void init(GameObject *owner) { m_pOwner = owner; }
   virtual void update(float deltatime) {}
   virtual void draw(IGraphics *IGraphics) {}
@@ -109,20 +113,6 @@ public:
   void draw(IGraphics *graphics);
 };
 
-class ScriptBehaviour : public Component {
-private:
-  bool hasEnded = true;
-  Vector2 target;
-  Vector2 startPosition;
-  Vector2 speed;
-  lua_State *state;
-
-public:
-  void setState(lua_State *state) { this->state = state; }
-  void move_to(const Vector2 &v, const Vector2 &speed);
-  void update(float deltatime);
-};
-
 class BoxCollider : public Component {
 private:
   int m_width;
@@ -136,5 +126,21 @@ public:
   Vector2 getPosition();
   int Width() { return m_width; }
   int Height() { return m_height; }
-  bool Overlap(BoxCollider &other);
+  bool Overlap(std::shared_ptr<BoxCollider> other);
 };
+
+class ScriptBehaviour : public Component {
+private:
+  bool hasEnded = true;
+  Vector2 target;
+  Vector2 startPosition;
+  Vector2 speed;
+  lua_State *state;
+
+public:
+  void setState(lua_State *state) { this->state = state; }
+  void move_to(const Vector2 &v, const Vector2 &speed);
+  void update(float deltatime);
+  void call_onCollisionEnter(GameObject *other);
+};
+

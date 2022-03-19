@@ -68,7 +68,7 @@ void AllegroGame::init(){
 }
 
 void AllegroGame::run(){
-     m_levelManager.load("level/level02.lua");
+     m_levelManager.load("level/main.lua");
 //   SpriteList spriteList;
     //Sprite sprite;
    //sprite.texture = Graphics::getInstance()->getTexture("img/test.png");

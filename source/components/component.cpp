@@ -26,6 +26,11 @@ void PlayerController::update(float deltatime) {
     m_pOwner->move(Vector2(-1, 0));
   else if (Keyboard::getKeyDown(4))
     m_pOwner->move(Vector2(1, 0));
+  if(Keyboard::getKeyDown(19))
+	  m_pOwner->move(Vector2(0,1));
+  else if (Keyboard::getKeyDown(23))
+	  m_pOwner->move(Vector2(0,-1));
+
 }
 
 void PlayerController::draw(IGraphics *graphics) {
@@ -42,7 +47,7 @@ void ScriptBehaviour::move_to(const Vector2 &v, const Vector2 &speed) {
 
 void ScriptBehaviour::update(float deltatime) {
   if (hasEnded) {
-    lua_getglobal(state, "nextTask");
+    lua_getglobal(state, "NextTask");
     lua_pushlightuserdata(state, m_pOwner);
     lua_pushlightuserdata(state, this);
     lua_pcall(state, 2, 1, 0);
@@ -58,17 +63,27 @@ void ScriptBehaviour::update(float deltatime) {
   }
 }
 
+void ScriptBehaviour::call_onCollisionEnter(GameObject *other){
+	lua_getglobal(state, "OnCollisionEnter");
+	lua_pushlightuserdata(state, m_pOwner);
+	lua_pushlightuserdata(state, other);
+	lua_pcall(state, 2,1, 0);
+	lua_pop(state,1);
+}
+
 Vector2 BoxCollider::getPosition() { return m_pOwner->getPosition(); }
 
-bool BoxCollider::Overlap(BoxCollider &other) {
+bool BoxCollider::Overlap(std::shared_ptr<BoxCollider> other) {
+	if(other == nullptr || other->getOwner() == this->m_pOwner) return false;
+
   if ((m_pOwner->getPosition().x + (float)m_width / 2 >
-       other.getPosition().x - (float)other.Width() / 2) &&
+       other->getPosition().x - (float)other->Width() / 2) &&
       (m_pOwner->getPosition().x - (float)m_width / 2 <
-       other.getPosition().x + (float)other.Width() / 2) &&
+       other->getPosition().x + (float)other->Width() / 2) &&
       (m_pOwner->getPosition().y + (float)m_height / 2 >
-       other.getPosition().y - (float)other.Height() / 2) &&
+       other->getPosition().y - (float)other->Height() / 2) &&
       (m_pOwner->getPosition().y - (float)m_height / 2 <
-       other.getPosition().y + (float)other.Height() / 2))
+       other->getPosition().y + (float)other->Height() / 2))
     return true;
   else
     return false;

@@ -3,6 +3,22 @@
 #include <cstring>
 #include "../components/component.h"
 
+
+
+void Level::update(){
+	for(auto &object : gameObject ){
+		object->update(0);
+		for(auto &other: gameObject){
+			if(object->checkCollision(other)){
+				auto script = object->getComponent<ScriptBehaviour>();
+				if(script)
+					script->call_onCollisionEnter(other);
+			}
+		}
+	}
+}
+
+
 GameObject* Level::newGameObject(){
     auto *object = new GameObject();
     gameObject.push_back(std::move(object));
@@ -99,10 +115,10 @@ Level* LevelManager::load(const char* filename){
     luaL_openlibs(state);
     lua_pushcfunction(state, lua_create_level);
     lua_setglobal(state, "_createLevel");
-    lua_pushcfunction(state, lua_create_object);
-    lua_setglobal(state, "_createObject");
+  //lua_pushcfunction(state, lua_create_object);
+  //lua_setglobal(state, "_createObject");
     lua_pushcfunction(state, lua_create_object_ext);
-    lua_setglobal(state, "_createObjectExt");
+    lua_setglobal(state, "_createObject");
     lua_pushcfunction(state, lua_add_component);
     lua_setglobal(state, "_addComponent");
     lua_pushcfunction(state, lua_move_to);
@@ -142,7 +158,7 @@ int lua_add_component(lua_State *state){
     if(strcmp(type,"staticSprite")==0){
         printf("  _add_static_sprite\n");
         const char* texture = lua_tostring(state, 3);
-        StaticSprite *ss = object->addComponent<StaticSprite>();
+        auto ss = object->addComponent<StaticSprite>();
         ss->setSprite(Graphics::getInstance()->getTexture(texture),Rectangle(0,0,32,32));
     }
     return 0;
@@ -172,9 +188,14 @@ int lua_create_object_ext(lua_State *state){
         }
         else if(strcmp(type,"scriptBehaviour")==0){
             printf("scriptSetState\n");
-            ScriptBehaviour *s = object->addComponent<ScriptBehaviour>();
+            auto s = object->addComponent<ScriptBehaviour>();
             s->setState(state);
         }
+		else if (strcmp(type,"boxCollider")==0){
+			printf("add BoxCollider");
+			auto bc = object->addComponent<BoxCollider>();
+			bc->setSize(32,32);
+		}
         else if (strcmp(type,"staticSprite")==0){
 
              lua_getfield(state,5,"x");
@@ -197,7 +218,7 @@ int lua_create_object_ext(lua_State *state){
              const char* texture = lua_tostring(state, -1);
              lua_pop(state, 1);
 
-             StaticSprite *ss = object->addComponent<StaticSprite>();
+             auto ss = object->addComponent<StaticSprite>();
              ss->setSprite(Graphics::getInstance()->getTexture(texture),{sx,sy,sw,sh});
 
         }
