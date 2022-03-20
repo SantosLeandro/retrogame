@@ -1,3 +1,4 @@
+-- main file
 Components = require("./level/gameObjects")
 
 Room = require("./level/room")
