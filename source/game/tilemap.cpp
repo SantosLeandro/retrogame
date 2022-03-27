@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <lua.hpp>
+#include <lua5.4/lua.hpp>
 
 void Tilemap::init(int width, int height,int col, int tilesize, Texture *texture, std::vector<int> map){
     this->width = width;

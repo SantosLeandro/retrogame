@@ -6,7 +6,7 @@
 #include "player.h"
 #include "../core/graphics.h"
 #include "tilemap.h"
-#include <lua.hpp>
+#include <lua5.4/lua.hpp>
 
 class Level{
     protected:

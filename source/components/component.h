@@ -3,7 +3,7 @@
 #include "../core/graphics.h"
 #include "../core/vector2.h"
 #include <iostream>
-#include <lua.hpp>
+#include <lua5.4/lua.hpp>
 #include <map>
 #include <string>
 #include <vector>
