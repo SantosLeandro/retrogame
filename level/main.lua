@@ -21,8 +21,8 @@ function OnCollisionEnter(obj, other)
 end
 
 function NextTask(obj, componentPtr)
-	_moveTo(obj, 300,300,2,2)
-	print("next task")
+--	_moveTo(obj, 300,300,2,2)
+--	print("next task")
 end
 
 function Inc(value, inc)
